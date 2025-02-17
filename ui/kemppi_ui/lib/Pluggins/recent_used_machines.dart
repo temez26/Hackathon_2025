@@ -7,6 +7,31 @@ class RecentUsedMachines extends StatefulWidget {
 
 class _RecentUsedMachines extends State<RecentUsedMachines> {
   final PageController _controller = PageController(viewportFraction: 0.6);
+  int _currentPage = 0;
+
+  void _nextPage() {
+    if (_currentPage < 5) {
+      // Prevent going past the last item
+      _currentPage++;
+      _controller.animateToPage(
+        _currentPage,
+        duration: Duration(milliseconds: 300),
+        curve: Curves.easeInOut,
+      );
+    }
+  }
+
+  void _previousPage() {
+    if (_currentPage > 0) {
+      // Prevent going before first item
+      _currentPage--;
+      _controller.animateToPage(
+        _currentPage,
+        duration: Duration(milliseconds: 300),
+        curve: Curves.easeInOut,
+      );
+    }
+  }
 
   @override
   void dispose() {
@@ -17,52 +42,77 @@ class _RecentUsedMachines extends State<RecentUsedMachines> {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: 200,
-      width: 800,
-      child: PageView.builder(
-        controller: _controller,
-        itemCount: 6,
-        itemBuilder: (context, index) {
-          return Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 8.0),
-            child: ClipRRect(
-              borderRadius: BorderRadius.circular(12),
-              child: Container(
-                decoration: BoxDecoration(
-                  color: Colors.grey[300], // Fondo gris
-                  border: Border.all(
-                      color: Color(0xFFf57300), width: 4), // Borde naranja
+      height: 400,
+      width: 1000,
+      child: Stack(
+        children: [
+          // Carousel
+          PageView.builder(
+            controller: _controller,
+            itemCount: 6,
+            onPageChanged: (index) {
+              setState(() {
+                _currentPage = index;
+              });
+            },
+            itemBuilder: (context, index) {
+              return Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                child: ClipRRect(
                   borderRadius: BorderRadius.circular(12),
-                ),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    // Rectángulo naranja
-                    Container(
-                      width: 100,
-                      height: 50,
-                      decoration: BoxDecoration(
-                        color: Colors.orange, // Color naranja
-                        borderRadius: BorderRadius.circular(8),
-                      ),
+                  child: Container(
+                    decoration: BoxDecoration(
+                      color: Colors.grey[300], // Fondo gris
+                      borderRadius: BorderRadius.circular(12),
                     ),
-                    const SizedBox(
-                        height: 8), // Espacio entre el rectángulo y el texto
-                    // Texto debajo del rectángulo
-                    const Text(
-                      "Model",
-                      style: TextStyle(
-                        color: Colors.black,
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
-                      ),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        // Rectángulo naranja
+                        Container(
+                          width: 300,
+                          height: 200,
+                          decoration: BoxDecoration(
+                            color: Colors.orange,
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                        ),
+                        const SizedBox(height: 8),
+                        const Text(
+                          "Model",
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontSize: 18,
+                          ),
+                        ),
+                      ],
                     ),
-                  ],
+                  ),
                 ),
-              ),
+              );
+            },
+          ),
+
+          // Left Button
+          Positioned(
+            left: 10,
+            top: 150, // Adjust position vertically
+            child: IconButton(
+              icon: Icon(Icons.arrow_back, size: 40, color: Colors.black),
+              onPressed: _previousPage,
             ),
-          );
-        },
+          ),
+
+          // Right Button
+          Positioned(
+            right: 10,
+            top: 150, // Adjust position vertically
+            child: IconButton(
+              icon: Icon(Icons.arrow_forward, size: 40, color: Colors.black),
+              onPressed: _nextPage,
+            ),
+          ),
+        ],
       ),
     );
   }

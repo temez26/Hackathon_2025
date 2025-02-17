@@ -3,7 +3,7 @@ import 'package:kemppi_ui/Pluggins/recent_data_carousel.dart';
 import 'package:kemppi_ui/Pluggins/recent_used_machines.dart';
 import 'package:kemppi_ui/Pluggins/tabbar.dart';
 import 'package:kemppi_ui/api/apiCalls.dart';
-import 'package:kemppi_ui/Pluggins/recent_data_carousel.dart';
+import 'package:kemppi_ui/model/Machine.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -15,6 +15,7 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   final ApiClient apiClient =
       ApiClient(); // Create an instance of the ApiClient class
+  List<Machine> _machines = [];
   String _data = 'Fetching data...';
 
   @override
@@ -25,9 +26,10 @@ class _HomeScreenState extends State<HomeScreen> {
 
   Future<void> fetchRecentWelds() async {
     try {
-      final data = await apiClient.fetchRecentWelds();
+      final machines = await apiClient.fetchRecentWelds();
       setState(() {
-        _data = data.toString();
+        _machines = machines;
+        _data = machines.toString();
         print(_data);
       });
     } catch (e) {
@@ -42,7 +44,7 @@ class _HomeScreenState extends State<HomeScreen> {
     return Scaffold(
       appBar: _Header(),
       body: SingleChildScrollView(
-        child: Column(children: [_Body() /* _Footer()*/]),
+        child: Column(children: [_Body(machines: _machines) /* _Footer()*/]),
       ),
     );
   }
@@ -64,6 +66,10 @@ class _Header extends StatelessWidget implements PreferredSizeWidget {
 }
 
 class _Body extends StatelessWidget {
+  final List<Machine> machines;
+
+  _Body({required this.machines});
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -113,10 +119,11 @@ class _Body extends StatelessWidget {
                     height: 400, // Adjust the height as needed
                     width: MediaQuery.of(context)
                         .size
-                        .width, // Set the width to the screen width,
+                        .width, // Set the width to the screen width
                     child: TabBarView(
                       children: [
-                        Center(child: RecentDataCarousel()),
+                        Center(
+                            child: RecentDataCarousel(list_machines: machines)),
                         Center(child: Text('Archived Page')),
                         Center(child: RecentUsedMachines()),
                       ],

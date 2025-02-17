@@ -17,10 +17,10 @@ class ApiClient {
         List<dynamic> jsonData = json.decode(response.body);
         List<Machine> machines =
             jsonData.map((json) => Machine.fromJson(json)).toList();
-        print('Fetched Machines:');
+        //print('Fetched Machines:');
         machines.forEach((machine) {
-          print(machine);
-          print('\n--\n');
+          //print(machine);
+          //print('\n--\n');
         });
         return machines;
       } else {
