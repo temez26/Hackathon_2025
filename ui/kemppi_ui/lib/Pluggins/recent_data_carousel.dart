@@ -21,7 +21,7 @@ class _RecentDataCarousel extends State<RecentDataCarousel> {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: 300,
+      height: 350,
       width: 800,
       child: PageView.builder(
         controller: _controller,
@@ -213,7 +213,7 @@ class _RecentDataCarousel extends State<RecentDataCarousel> {
                         ),
                       ],
                     ),
-                    SizedBox(height: 15),
+                    SizedBox(height: 40),
 
                     // Modelo
                     Center(
