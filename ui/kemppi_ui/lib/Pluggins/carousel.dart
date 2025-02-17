@@ -1,146 +1,80 @@
 import 'package:flutter/material.dart';
 
-class CustomCarouselFB2 extends StatefulWidget {
-  const CustomCarouselFB2({Key? key}) : super(key: key);
-
+class SimpleCarousel extends StatefulWidget {
   @override
-  _CustomCarouselFB2State createState() => _CustomCarouselFB2State();
+  _SimpleCarouselState createState() => _SimpleCarouselState();
 }
 
-class _CustomCarouselFB2State extends State<CustomCarouselFB2> {
-  // - - - - - - - - - - - - Instructions - - - - - - - - - - - - - -
-  // 1.Replace cards list with whatever widgets you'd like.
-  // 2.Change the widgetMargin attribute, to ensure good spacing on all screensize.
-  // 3.If you have a problem with this widget, please contact us at flutterbricks90@gmail.com
-  // Learn to build this widget at https://www.youtube.com/watch?v=dSMw1Nb0QVg!
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-  List<Widget> cards = [
-    CardFb1(
-      text: "Explore",
-      //imageUrl:
-      //    "https://firebasestorage.googleapis.com/v0/b/flutterbricks-public.appspot.com/o/illustrations%2Fundraw_Working_late_re_0c3y%201.png?alt=media&token=7b880917-2390-4043-88e5-5d58a9d70555",
-      subtitle: "+30 books",
-      onPressed: () {},
-    ),
-    CardFb1(
-      text: "Explore",
-      //imageUrl:
-      //    "https://firebasestorage.googleapis.com/v0/b/flutterbricks-public.appspot.com/o/illustrations%2Fundraw_Designer_re_5v95%201.png?alt=media&token=5d053bd8-d0ea-4635-abb6-52d87539b7ec",
-      subtitle: "+30 books",
-      onPressed: () {},
-    ),
-    CardFb1(
-      text: "Explore",
-      //imageUrl:
-      //    "https://firebasestorage.googleapis.com/v0/b/flutterbricks-public.appspot.com/o/illustrations%2Fundraw_Accept_terms_re_lj38%201.png?alt=media&token=476b97fd-ba66-4f62-94a7-bce4be794f36",
-      subtitle: "+30 books",
-      onPressed: () {},
-    ),
-  ];
-
-  final double carouselItemMargin = 16;
-
-  late PageController _pageController;
-  int _position = 0;
+class _SimpleCarouselState extends State<SimpleCarousel> {
+  final PageController _controller = PageController(viewportFraction: 0.6);
 
   @override
-  void initState() {
-    super.initState();
-    _pageController = PageController(initialPage: 0, viewportFraction: .7);
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    return PageView.builder(
-      controller: _pageController,
-      itemCount: cards.length,
-      onPageChanged: (int position) {
-        setState(() {
-          _position = position;
-        });
-      },
-      itemBuilder: (BuildContext context, int position) {
-        return imageSlider(position);
-      },
-    );
-  }
-
-  Widget imageSlider(int position) {
-    return AnimatedBuilder(
-      animation: _pageController,
-      builder: (BuildContext context, widget) {
-        return Container(
-          margin: EdgeInsets.all(carouselItemMargin),
-          child: Center(child: widget),
-        );
-      },
-      child: Container(child: cards[position]),
-    );
-  }
-}
-
-class CardFb1 extends StatelessWidget {
-  final String text;
-  //final String imageUrl;
-  final String subtitle;
-  final Function() onPressed;
-
-  const CardFb1({
-    required this.text,
-    //required this.imageUrl,
-    required this.subtitle,
-    required this.onPressed,
-    Key? key,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: onPressed,
-      child: Container(
-        width: 100,
-        height: 50,
-        padding: const EdgeInsets.all(30.0),
-        decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(12.5),
-          boxShadow: [
-            BoxShadow(
-              offset: const Offset(10, 20),
-              blurRadius: 10,
-              spreadRadius: 0,
-              color: Colors.grey.withOpacity(.05),
-            ),
-          ],
-        ),
-        child: Column(
-          children: [
-            //Image.network(imageUrl, height: 90, fit: BoxFit.cover),
-            const Spacer(),
-            Text(
-              text,
-              textAlign: TextAlign.center,
-              style: const TextStyle(
-                color: Colors.black,
-                fontWeight: FontWeight.bold,
-                fontSize: 18,
+    return SizedBox(
+      height: 200,
+      child: PageView.builder(
+        controller: _controller,
+        itemCount: ImageInfo.values.length,
+        itemBuilder: (context, index) {
+          final image = ImageInfo.values[index];
+          return Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 8.0),
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(12),
+              child: Container(
+                decoration: BoxDecoration(
+                  color: Colors.grey[300], // Gray background
+                  border: Border.all(
+                      color: Colors.orange, width: 4), // Orange border
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                child: Center(
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Text(
+                        image.title,
+                        style: const TextStyle(
+                          color: Colors.black,
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      const SizedBox(height: 4),
+                      Text(
+                        image.subtitle,
+                        style: const TextStyle(
+                          color: Colors.black,
+                          fontSize: 14,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
               ),
             ),
-            const SizedBox(height: 5),
-            Text(
-              subtitle,
-              textAlign: TextAlign.center,
-              style: const TextStyle(
-                color: Colors.grey,
-                fontWeight: FontWeight.normal,
-                fontSize: 12,
-              ),
-            ),
-            const SizedBox(height: 10),
-          ],
-        ),
+          );
+        },
       ),
     );
   }
+}
+
+enum ImageInfo {
+  image0('The Flow', 'Sponsored | Season 1 Now Streaming'),
+  image1('Through the Pane', 'Sponsored | Season 1 Now Streaming'),
+  image2('Iridescence', 'Sponsored | Season 1 Now Streaming'),
+  image3('Sea Change', 'Sponsored | Season 1 Now Streaming'),
+  image4('Blue Symphony', 'Sponsored | Season 1 Now Streaming'),
+  image5('When It Rains', 'Sponsored | Season 1 Now Streaming');
+
+  const ImageInfo(this.title, this.subtitle);
+  final String title;
+  final String subtitle;
 }
