@@ -209,6 +209,7 @@ class MachinedetailPopup extends StatelessWidget {
     );
   }
 
+//NOT IN USE -- IGNORE
   @override
   Widget build(BuildContext context) {
     return Scaffold(

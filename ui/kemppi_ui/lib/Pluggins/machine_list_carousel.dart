@@ -23,21 +23,21 @@ class _MachineListCarouselState extends State<MachineListCarousel> {
   Widget build(BuildContext context) {
     return SizedBox(
       height: 400,
-      width: 800,
+      width: 700,
       child: PageView.builder(
         controller: _controller,
         itemCount: widget.list_machines.length,
         itemBuilder: (context, index) {
           final machine = widget.list_machines[index];
           return Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20.0),
+            padding: const EdgeInsets.symmetric(horizontal: 10.0),
             child: ClipRRect(
               child: Container(
                 padding: const EdgeInsets.only(
                     left: 40, right: 40), // Espaciado interno
                 decoration: BoxDecoration(
                   //color: Colors.grey[300], // Fondo gris claro
-                  border: Border.all(color: Colors.black, width: 2),
+                  border: Border.all(color: Colors.grey[300]!, width: 2),
                   borderRadius: BorderRadius.circular(6),
                 ),
                 child: Column(
@@ -80,11 +80,11 @@ class _MachineListCarouselState extends State<MachineListCarousel> {
                           color: Colors.black,
                           fontFamily: 'Proxima Nova'),
                     ),
-                    SizedBox(height: 30.0),
+                    SizedBox(height: 60.0),
                     ElevatedButton(
                       style: ElevatedButton.styleFrom(
-                        minimumSize: Size(150, 50),
-                        backgroundColor: Color(0xFFf57300),
+                        minimumSize: Size(300, 60),
+                        backgroundColor: Colors.white,
                         side: BorderSide(color: Color(0xFFf57300), width: 2),
                       ),
                       onPressed: () {
@@ -94,7 +94,7 @@ class _MachineListCarouselState extends State<MachineListCarousel> {
                       child: Text('More',
                           style: TextStyle(
                               fontSize: 20,
-                              color: Colors.white,
+                              color: Colors.black,
                               fontWeight: FontWeight.bold,
                               fontFamily: 'Proxima Nova')),
                     ),

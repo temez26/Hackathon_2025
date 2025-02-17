@@ -37,7 +37,7 @@ class _RecentDataCarousel extends State<RecentDataCarousel> {
                 decoration: BoxDecoration(
                   color: Colors.grey[300], // Fondo gris claro
                   border: Border.all(color: Colors.orange, width: 2),
-                  borderRadius: BorderRadius.circular(12),
+                  borderRadius: BorderRadius.circular(6),
                 ),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -50,17 +50,17 @@ class _RecentDataCarousel extends State<RecentDataCarousel> {
                         Text(
                           "Current:",
                           style: TextStyle(
-                            fontSize: 16,
+                            fontSize: 18,
                             color: Colors.black,
                             fontFamily: 'Proxima Nova',
                             fontWeight: FontWeight.bold,
                           ),
                         ),
-                        SizedBox(width: 200),
+                        SizedBox(width: 180),
                         Text(
                           "Voltage:",
                           style: TextStyle(
-                            fontSize: 16,
+                            fontSize: 18,
                             color: Colors.black,
                             fontFamily: 'Proxima Nova',
                             fontWeight: FontWeight.bold,
@@ -74,16 +74,16 @@ class _RecentDataCarousel extends State<RecentDataCarousel> {
                         Text(
                           "${machine.weldingParameters.current.avg} (avg)",
                           style: TextStyle(
-                            fontSize: 16,
+                            fontSize: 18,
                             color: Colors.black,
                             fontFamily: 'Proxima Nova',
                           ),
                         ),
-                        SizedBox(width: 200),
+                        SizedBox(width: 180),
                         Text(
                           "${machine.weldingParameters.voltage.avg} (avg)",
                           style: TextStyle(
-                            fontSize: 16,
+                            fontSize: 18,
                             color: Colors.black,
                             fontFamily: 'Proxima Nova',
                           ),
@@ -96,7 +96,7 @@ class _RecentDataCarousel extends State<RecentDataCarousel> {
                         Text(
                           "Weld Duration Total: ",
                           style: TextStyle(
-                            fontSize: 16,
+                            fontSize: 18,
                             color: Colors.black,
                             fontFamily: 'Proxima Nova',
                             fontWeight: FontWeight.bold,
@@ -106,7 +106,7 @@ class _RecentDataCarousel extends State<RecentDataCarousel> {
                         Text(
                           "${machine.weldDurationMs.totalMs} ms",
                           style: TextStyle(
-                            fontSize: 16,
+                            fontSize: 18,
                             color: Colors.black,
                             fontFamily: 'Proxima Nova',
                           ),
@@ -114,55 +114,103 @@ class _RecentDataCarousel extends State<RecentDataCarousel> {
                       ],
                     ),
                     SizedBox(height: 15),
-                    // Consumo de materiales
+                    // Material Consumption
                     Text(
-                      "Material consumption:",
+                      "Material Consumption:",
                       style: TextStyle(
-                          fontSize: 16,
+                          fontSize: 18,
                           fontWeight: FontWeight.bold,
                           color: Colors.black,
                           fontFamily: 'Proxima Nova'),
                     ),
+                    SizedBox(height: 10),
                     Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Text(
-                          "energy: ",
-                          style: TextStyle(
-                              fontSize: 16,
-                              color: Colors.black,
-                              fontFamily: 'Proxima Nova'),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Row(
+                              children: [
+                                Text(
+                                  "energy: ",
+                                  style: TextStyle(
+                                      fontSize: 18,
+                                      color: Colors.black,
+                                      fontFamily: 'Proxima Nova'),
+                                ),
+                                Text(
+                                  "${machine.materialConsumption.energyConsumptionAsWh} Wh",
+                                  style: TextStyle(
+                                      fontSize: 18,
+                                      color: Colors.black,
+                                      fontFamily: 'Proxima Nova'),
+                                ),
+                              ],
+                            ),
+                            SizedBox(height: 10),
+                            Row(
+                              children: [
+                                Text(
+                                  "wire: ",
+                                  style: TextStyle(
+                                      fontSize: 18,
+                                      color: Colors.black,
+                                      fontFamily: 'Proxima Nova'),
+                                ),
+                                Text(
+                                  "${machine.materialConsumption.wireConsumptionInMeters} m",
+                                  style: TextStyle(
+                                      fontSize: 18,
+                                      color: Colors.black,
+                                      fontFamily: 'Proxima Nova'),
+                                ),
+                              ],
+                            ),
+                          ],
                         ),
-                        Text(
-                          "${machine.materialConsumption.energyConsumptionAsWh} Wh",
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Row(
+                              children: [
+                                Text(
+                                  "filler: ",
+                                  style: TextStyle(
+                                      fontSize: 18,
+                                      color: Colors.black,
+                                      fontFamily: 'Proxima Nova'),
+                                ),
+                                Text(
+                                  "${machine.materialConsumption.fillerConsumptionInGrams} g",
+                                  style: TextStyle(
+                                      fontSize: 18,
+                                      color: Colors.black,
+                                      fontFamily: 'Proxima Nova'),
+                                ),
+                              ],
+                            ),
+                            SizedBox(height: 10),
+                            Row(
+                              children: [
+                                Text(
+                                  "gas: ",
+                                  style: TextStyle(
+                                      fontSize: 18,
+                                      color: Colors.black,
+                                      fontFamily: 'Proxima Nova'),
+                                ),
+                                Text(
+                                  "${machine.materialConsumption.gasConsumptionInLiters} l",
+                                  style: TextStyle(
+                                      fontSize: 18,
+                                      color: Colors.black,
+                                      fontFamily: 'Proxima Nova'),
+                                ),
+                              ],
+                            ),
+                          ],
                         ),
-                        SizedBox(width: 10),
-                        Text(
-                          "wire: ",
-                        ),
-                        Text(
-                          "${machine.materialConsumption.wireConsumptionInMeters} m",
-                        )
-                      ],
-                    ),
-                    Row(
-                      children: [
-                        Text(
-                          "filler: ",
-                          style: TextStyle(
-                              fontSize: 16,
-                              color: Colors.black,
-                              fontFamily: 'Proxima Nova'),
-                        ),
-                        Text(
-                          "${machine.materialConsumption.fillerConsumptionInGrams} g",
-                        ),
-                        SizedBox(width: 10),
-                        Text(
-                          "gas: ",
-                        ),
-                        Text(
-                          "${machine.materialConsumption.gasConsumptionInLiters} l",
-                        )
                       ],
                     ),
                     SizedBox(height: 15),
@@ -172,7 +220,7 @@ class _RecentDataCarousel extends State<RecentDataCarousel> {
                       child: Text(
                         "Model: ${machine.weldingMachine.model}",
                         style: TextStyle(
-                            fontSize: 27,
+                            fontSize: 30,
                             fontWeight: FontWeight.bold,
                             color: Colors.black,
                             fontFamily: 'Proxima Nova'),
