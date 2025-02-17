@@ -4,6 +4,7 @@ import 'package:kemppi_ui/Pluggins/recent_used_machines.dart';
 import 'package:kemppi_ui/Pluggins/tabbar.dart';
 import 'package:kemppi_ui/api/apiCalls.dart';
 import 'package:kemppi_ui/model/Machine.dart';
+import 'package:kemppi_ui/Pluggins/slide_menu.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -43,6 +44,7 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: _Header(),
+      endDrawer: SlideMenu(),
       body: SingleChildScrollView(
         child: Column(children: [_Body(machines: _machines) /* _Footer()*/]),
       ),
@@ -54,10 +56,22 @@ class _Header extends StatelessWidget implements PreferredSizeWidget {
   @override
   Widget build(BuildContext context) {
     return AppBar(
+      automaticallyImplyLeading: false,
       backgroundColor: Colors.black,
       title: Image.asset('lib/Assets/Images/kemppi_logo.png', height: 110),
       centerTitle: false,
       toolbarHeight: 450,
+      actions: [
+        Padding(
+          padding: const EdgeInsets.only(right: 50.0),
+          child: IconButton(
+            icon: Icon(Icons.menu, size: 40), // Increase icon size
+            onPressed: () {
+              Scaffold.of(context).openEndDrawer();
+            },
+          ),
+        ),
+      ],
     );
   }
 
@@ -78,7 +92,7 @@ class _Body extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            //SizedBox(height: 8), // Adds spacing between title and text
+            SizedBox(height: 30), // Adds spacing between title and text
             DefaultTabController(
               length: 3,
               child: Column(

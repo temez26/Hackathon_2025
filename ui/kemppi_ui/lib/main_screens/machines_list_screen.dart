@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:kemppi_ui/Pluggins/machine_list_carousel.dart';
 import 'package:kemppi_ui/api/apiCalls.dart';
 import 'package:kemppi_ui/model/Machine.dart';
+import 'package:kemppi_ui/main_screens/home_screen.dart';
+import 'package:kemppi_ui/Pluggins/slide_menu.dart';
 
 class MachinesListScreen extends StatefulWidget {
   const MachinesListScreen({super.key});
@@ -41,6 +43,7 @@ class _MachinesListScreenState extends State<MachinesListScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: _Header(),
+      endDrawer: SlideMenu(),
       body: SingleChildScrollView(
         child: Column(children: [_Body(machines: _machines) /* _Footer()*/]),
       ),
@@ -52,10 +55,22 @@ class _Header extends StatelessWidget implements PreferredSizeWidget {
   @override
   Widget build(BuildContext context) {
     return AppBar(
+      automaticallyImplyLeading: false, // Prevent back arrow
       backgroundColor: Colors.black,
       title: Image.asset('lib/Assets/Images/kemppi_logo.png', height: 110),
       centerTitle: false,
       toolbarHeight: 450,
+      actions: [
+        Padding(
+          padding: const EdgeInsets.only(right: 50.0),
+          child: IconButton(
+            icon: Icon(Icons.menu, size: 40), // Increase icon size
+            onPressed: () {
+              Scaffold.of(context).openEndDrawer();
+            },
+          ),
+        ),
+      ],
     );
   }
 
@@ -79,17 +94,17 @@ class _Body extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            SizedBox(height: 16),
+            SizedBox(height: 30),
             Text(
               'Welding Machines',
               style: TextStyle(
-                fontSize: 32,
+                fontSize: 40,
                 fontWeight: FontWeight.bold,
                 fontFamily: 'Proxima Nova',
                 color: Color(0xFFf57300),
               ),
             ),
-            SizedBox(height: 20),
+            SizedBox(height: 30),
             MachineListCarousel(list_machines: machines),
             // Add more widgets here if needed
           ],

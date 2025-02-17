@@ -17,7 +17,7 @@ class TabItem extends StatelessWidget {
           Text(
             title,
             overflow: TextOverflow.ellipsis,
-            style: TextStyle(fontFamily: 'Proxima Nova', fontSize: 16),
+            style: TextStyle(fontFamily: 'Proxima Nova', fontSize: 20),
           ),
         ],
       ),

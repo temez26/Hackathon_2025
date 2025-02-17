@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:kemppi_ui/model/Machine.dart';
+import 'package:kemppi_ui/Pluggins/machineDetail_popup.dart';
 
 class MachineListCarousel extends StatefulWidget {
   final List<Machine> list_machines;
@@ -35,24 +36,24 @@ class _MachineListCarouselState extends State<MachineListCarousel> {
                 padding: const EdgeInsets.only(
                     left: 40, right: 40), // Espaciado interno
                 decoration: BoxDecoration(
-                  color: Colors.grey[300], // Fondo gris claro
-                  border: Border.all(color: Colors.orange, width: 2),
+                  //color: Colors.grey[300], // Fondo gris claro
+                  border: Border.all(color: Colors.black, width: 2),
                   borderRadius: BorderRadius.circular(6),
                 ),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
-                    SizedBox(height: 100.0),
+                    SizedBox(height: 80.0),
                     Text(
-                      "Model: ${machine.weldingMachine.model}",
+                      "${machine.weldingMachine.model}",
                       style: TextStyle(
-                          fontSize: 27,
+                          fontSize: 30,
                           fontWeight: FontWeight.bold,
                           color: Colors.black,
                           fontFamily: 'Proxima Nova'),
                     ),
-                    SizedBox(height: 10.0),
+                    SizedBox(height: 20.0),
                     Text(
                       "Name: ${machine.weldingMachine.name}",
                       style: TextStyle(
@@ -78,6 +79,24 @@ class _MachineListCarouselState extends State<MachineListCarousel> {
                           //fontWeight: FontWeight.bold,
                           color: Colors.black,
                           fontFamily: 'Proxima Nova'),
+                    ),
+                    SizedBox(height: 30.0),
+                    ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        minimumSize: Size(150, 50),
+                        backgroundColor: Color(0xFFf57300),
+                        side: BorderSide(color: Color(0xFFf57300), width: 2),
+                      ),
+                      onPressed: () {
+                        MachinedetailPopup(machine: machine)
+                            .showWeldingPopup(context);
+                      },
+                      child: Text('More',
+                          style: TextStyle(
+                              fontSize: 20,
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold,
+                              fontFamily: 'Proxima Nova')),
                     ),
                   ],
                 ),
