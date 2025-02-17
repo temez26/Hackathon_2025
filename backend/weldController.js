@@ -18,7 +18,7 @@ const fetchWelds = async (query) => {
   });
   return response.data;
 };
-
+// shows all the welding machines no filters
 const getWelds = async (req, res) => {
   try {
     const welds = await fetchWelds(req.query);
@@ -35,6 +35,20 @@ const getWeldById = (req, res) => {
   res.json({ message: `Details for weld ${id}` });
 };
 
+// gets the lately used 10 welding machines
+const getWeldsByTimestamp = async (req, res) => {
+  try {
+    const welds = await fetchWelds({});
+    // Sort welds by timestamp in descending order and get the 10 most recent
+    const recentWelds = welds
+      .sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp))
+      .slice(0, 10);
+    res.json(recentWelds);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+// shows all of the welding machines by serial
 const getWeldsByMachineSerial = async (req, res) => {
   try {
     const { serial } = req.params;
@@ -49,28 +63,7 @@ const getWeldsByMachineSerial = async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 };
-
-const getWeldsByTimestamp = async (req, res) => {
-  try {
-    const { timestampStart, timestampEnd } = req.query;
-    let welds = await fetchWelds({});
-    if (timestampStart || timestampEnd) {
-      const startTime = timestampStart ? new Date(timestampStart) : new Date(0);
-      const endTime = timestampEnd ? new Date(timestampEnd) : new Date();
-      welds = welds.filter((weld) => {
-        const weldTime = new Date(weld.timestamp);
-        return weldTime >= startTime && weldTime <= endTime;
-      });
-    }
-    // Sort welds by timestamp in descending order and get the 10 most recent
-    welds.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
-    const recentWelds = welds.slice(0, 10);
-    res.json(recentWelds);
-  } catch (error) {
-    res.status(500).json({ error: error.message });
-  }
-};
-// filters the models with serial and shows the 10 most recently used
+// filters the result by model with serial and shows the 10 most recently used
 const getWeldsByModelLatest = async (req, res) => {
   try {
     const { model } = req.params;
@@ -94,7 +87,7 @@ const getWeldStatistics = (req, res) => {
   res.json({ message: "Aggregate welding statistics" });
 };
 
-const getVoltage = async (req, res) => {
+const getVoltageAvgAll = async (req, res) => {
   try {
     const welds = await fetchWelds(req.query);
     // Extract voltage data from each weld.
@@ -116,7 +109,7 @@ const getVoltage = async (req, res) => {
   }
 };
 
-const getCurrent = async (req, res) => {
+const getCurrentAvgAll = async (req, res) => {
   try {
     const welds = await fetchWelds(req.query);
     // Extract current data from each weld.
@@ -137,6 +130,8 @@ const getCurrent = async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 };
+const getVoltage = async (req, res) => {};
+const getCurrent = async (req, res) => {};
 
 module.exports = {
   getWelds,
@@ -147,4 +142,6 @@ module.exports = {
   getWeldStatistics,
   getVoltage,
   getCurrent,
+  getVoltageAvgAll,
+  getCurrentAvgAll,
 };
