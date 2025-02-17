@@ -31,12 +31,22 @@ class ApiClient {
     }
   }
 
-  Future<dynamic> fetchWeldById(String id) async {
-    final url = '$baseUrl/welds/$id';
+  Future<dynamic> fetchByMachineSerial() async {
+    final url = '$baseUrl/welds/time'; //CHANGE TO welds/machine
     try {
       final response = await http.get(Uri.parse(url));
+      //print(response.body);
+      //print(response);
       if (response.statusCode == 200) {
-        return json.decode(response.body);
+        List<dynamic> jsonData = json.decode(response.body);
+        List<Machine> machines =
+            jsonData.map((json) => Machine.fromJson(json)).toList();
+        //print('Fetched Machines:');
+        machines.forEach((machine) {
+          print(machine);
+          //print('\n--\n');
+        });
+        return machines;
       } else {
         throw Exception('Request failed with status: ${response.statusCode}');
       }

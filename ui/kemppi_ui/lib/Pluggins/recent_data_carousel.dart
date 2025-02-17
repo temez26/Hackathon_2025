@@ -25,8 +25,9 @@ class _RecentDataCarousel extends State<RecentDataCarousel> {
       width: 800,
       child: PageView.builder(
         controller: _controller,
-        itemCount: 5, // Número de elementos en el carrusel
+        itemCount: widget.list_machines.length,
         itemBuilder: (context, index) {
+          final machine = widget.list_machines[index];
           return Padding(
             padding: const EdgeInsets.symmetric(horizontal: 20.0),
             child: ClipRRect(
@@ -71,7 +72,7 @@ class _RecentDataCarousel extends State<RecentDataCarousel> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Text(
-                          "308 (avg)",
+                          "${machine.weldingParameters.current.avg} (avg)",
                           style: TextStyle(
                             fontSize: 16,
                             color: Colors.black,
@@ -80,7 +81,7 @@ class _RecentDataCarousel extends State<RecentDataCarousel> {
                         ),
                         SizedBox(width: 200),
                         Text(
-                          "35 (avg)",
+                          "${machine.weldingParameters.voltage.avg} (avg)",
                           style: TextStyle(
                             fontSize: 16,
                             color: Colors.black,
@@ -103,7 +104,7 @@ class _RecentDataCarousel extends State<RecentDataCarousel> {
                         ),
                         const SizedBox(height: 8),
                         Text(
-                          "15721 ms",
+                          "${machine.weldDurationMs.totalMs} ms",
                           style: TextStyle(
                             fontSize: 16,
                             color: Colors.black,
@@ -132,14 +133,14 @@ class _RecentDataCarousel extends State<RecentDataCarousel> {
                               fontFamily: 'Proxima Nova'),
                         ),
                         Text(
-                          "00",
+                          "${machine.materialConsumption.energyConsumptionAsWh} Wh",
                         ),
                         SizedBox(width: 10),
                         Text(
                           "wire: ",
                         ),
                         Text(
-                          "00",
+                          "${machine.materialConsumption.wireConsumptionInMeters} m",
                         )
                       ],
                     ),
@@ -153,14 +154,14 @@ class _RecentDataCarousel extends State<RecentDataCarousel> {
                               fontFamily: 'Proxima Nova'),
                         ),
                         Text(
-                          "00",
+                          "${machine.materialConsumption.fillerConsumptionInGrams} g",
                         ),
                         SizedBox(width: 10),
                         Text(
                           "gas: ",
                         ),
                         Text(
-                          "00",
+                          "${machine.materialConsumption.gasConsumptionInLiters} l",
                         )
                       ],
                     ),
@@ -169,7 +170,7 @@ class _RecentDataCarousel extends State<RecentDataCarousel> {
                     // Modelo
                     Center(
                       child: Text(
-                        "Model: X8",
+                        "Model: ${machine.weldingMachine.model}",
                         style: TextStyle(
                             fontSize: 27,
                             fontWeight: FontWeight.bold,
