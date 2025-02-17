@@ -1,8 +1,38 @@
 import 'package:flutter/material.dart';
 import 'package:kemppi_ui/Pluggins/carousel.dart';
+import 'package:kemppi_ui/api/apiCalls.dart';
 
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
+
+  @override
+  _HomeScreenState createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
+  final ApiClient apiClient =
+      ApiClient(); // Create an instance of the ApiClient class
+  String _data = 'Fetching data...';
+
+  @override
+  void initState() {
+    super.initState();
+    fetchRecentWelds();
+  }
+
+  Future<void> fetchRecentWelds() async {
+    try {
+      final data = await apiClient.fetchRecentWelds();
+      setState(() {
+        _data = data.toString();
+        print(_data);
+      });
+    } catch (e) {
+      setState(() {
+        _data = 'Error: $e';
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
