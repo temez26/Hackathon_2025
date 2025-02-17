@@ -1,8 +1,13 @@
 const express = require("express");
+const cors = require("cors");
 const app = express();
 const weldController = require("./weldController");
 
 const PORT = process.env.PORT || 3000;
+
+// Enable CORS for all routes
+app.use(cors());
+
 // get all of the data from the server WORKS
 app.get("/welds", weldController.getWelds);
 
