@@ -12,7 +12,7 @@ const PORT = process.env.PORT;
 // Enable CORS for all routes
 app.use(cors());
 
-// Create a router for "/welds" endpoints
+// Create a router for "/kemppi" endpoints
 const weldsRouter = express.Router();
 
 // get all of the data from the server
@@ -60,8 +60,8 @@ weldsRouter.get(
   consumeController.getWeldDurationTotal
 );
 
-// Mount the router for "/welds" endpoints
-app.use("/welds", weldsRouter);
+// Mount the router for "/kemppi" endpoints
+app.use("/kemppi", weldsRouter);
 
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
