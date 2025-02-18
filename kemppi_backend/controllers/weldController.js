@@ -10,6 +10,46 @@ const getWelds = async (req, res) => {
   }
 };
 
+const getWeldsByLatest = async (req, res) => {
+  try {
+    const welds = await fetchWelds(req.query);
+    // Order welding data from latest based on timestamp
+    const sortedWelds = welds.sort(
+      (a, b) => new Date(b.timestamp) - new Date(a.timestamp)
+    );
+    res.json(sortedWelds);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
+const getWeldsByLatestNumber = async (req, res) => {
+  try {
+    const days = parseInt(req.params.number, 10);
+    if (isNaN(days)) {
+      return res.status(400).json({ error: "Invalid number parameter" });
+    }
+
+    const welds = await fetchWelds({});
+    const dateThreshold = new Date();
+    dateThreshold.setDate(dateThreshold.getDate() - days);
+
+    // Filter welds from the latest days
+    const latestWelds = welds.filter(
+      (weld) => new Date(weld.timestamp) >= dateThreshold
+    );
+
+    // Sort the filtered welds in descending order by timestamp
+    const sortedWelds = latestWelds.sort(
+      (a, b) => new Date(b.timestamp) - new Date(a.timestamp)
+    );
+
+    res.json(sortedWelds);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
 // Returns the latest weld record for each unique welding machine (using serial for separation)
 const getWeldsByTime = async (req, res) => {
   try {
@@ -67,4 +107,6 @@ module.exports = {
   getWelds,
   getWeldsByMachineTime,
   getWeldsByTime,
+  getWeldsByLatest,
+  getWeldsByLatestNumber,
 };
