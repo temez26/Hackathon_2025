@@ -8,7 +8,7 @@ class ApiClient {
   static const String baseUrl = 'http://localhost:3000';
 
   Future<dynamic> fetchRecentWelds() async {
-    const url = '$baseUrl/welds/time';
+    const url = '$baseUrl/kemppi/machines';
     try {
       final response = await http.get(Uri.parse(url));
       //print(response.body);
@@ -32,7 +32,7 @@ class ApiClient {
   }
 
   Future<dynamic> fetchByMachineSerial() async {
-    final url = '$baseUrl/welds/time'; //CHANGE TO welds/machine
+    final url = '$baseUrl/kemppi/machines/'; //CHANGE TO welds/machine
     try {
       final response = await http.get(Uri.parse(url));
       //print(response.body);

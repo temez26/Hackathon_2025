@@ -51,4 +51,6 @@ router.get(
   consumeController.getWeldDurationTotal
 );
 
+router.get("/statistics");
+
 module.exports = router;
