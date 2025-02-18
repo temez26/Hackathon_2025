@@ -3,6 +3,7 @@ import 'package:kemppi_ui/Pluggins/machine_list_carousel.dart';
 import 'package:kemppi_ui/Pluggins/recent_data_carousel.dart';
 import 'package:kemppi_ui/Pluggins/recent_used_machines.dart';
 import 'package:kemppi_ui/Pluggins/tabbar.dart';
+import 'package:kemppi_ui/Pluggins/trends_summary.dart';
 import 'package:kemppi_ui/api/apiCalls.dart';
 import 'package:kemppi_ui/model/Machine.dart';
 import 'package:kemppi_ui/Pluggins/slide_menu.dart';
@@ -162,7 +163,8 @@ class _Body extends StatelessWidget {
                         SingleChildScrollView(
                           child: RecentDataList(list_machines: recentmachines),
                         ),
-                        Center(child: Text('Archived Page')),
+                        Center(
+                            child: TrendsSummary(list_machines: allmachines)),
                         Center(
                             child: MachineListCarousel(
                           list_machines: allmachines,
