@@ -10,6 +10,19 @@ const getWelds = async (req, res) => {
   }
 };
 
+const getWeldsByLatest = async (req, res) => {
+  try {
+    const welds = await fetchWelds(req.query);
+    // Order welding data from latest based on timestamp
+    const sortedWelds = welds.sort(
+      (a, b) => new Date(b.timestamp) - new Date(a.timestamp)
+    );
+    res.json(sortedWelds);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
 // Returns the latest weld record for each unique welding machine (using serial for separation)
 const getWeldsByTime = async (req, res) => {
   try {
@@ -67,4 +80,5 @@ module.exports = {
   getWelds,
   getWeldsByMachineTime,
   getWeldsByTime,
+  getWeldsByLatest,
 };
