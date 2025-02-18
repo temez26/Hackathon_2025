@@ -60,7 +60,7 @@ class MachinedetailPopup extends StatelessWidget {
                   SizedBox(height: 10),
 
                   // Información de voltaje y corriente
-                  Row(
+                  /*Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       buildInfoColumn("Current:",
@@ -126,8 +126,19 @@ class MachinedetailPopup extends StatelessWidget {
                         ],
                       ),
                     ],
-                  ),
-                  SizedBox(height: 30),
+                  ),*/
+                  Center(
+                    child: Container(
+                        margin: EdgeInsets.symmetric(vertical: 20),
+                        width: 400,
+                        height: 200,
+                        decoration: BoxDecoration(
+                          border:
+                              Border.all(color: Color(0xFFf57300), width: 2),
+                        ),
+                        alignment: Alignment.center,
+                        child: Text("Picture of the machine")),
+                  )
                 ],
               ),
             ),
