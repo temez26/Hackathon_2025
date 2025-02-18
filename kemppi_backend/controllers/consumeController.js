@@ -5,7 +5,13 @@ const getMaterialConsumptionTotalData = async (serial, query = {}) => {
   if (!serial) {
     throw new Error("Serial parameter is required");
   }
-  const welds = await fetchWelds(query);
+  let welds = await fetchWelds(query);
+
+  if (query.dateThreshold) {
+    welds = welds.filter(
+      (weld) => new Date(weld.timestamp) >= new Date(query.dateThreshold)
+    );
+  }
   const filteredWelds = welds.filter(
     (weld) =>
       weld.weldingMachine && String(weld.weldingMachine.serial) === serial
@@ -49,7 +55,13 @@ const getWeldDurationTotalData = async (serial, query = {}) => {
   if (!serial) {
     throw new Error("Serial parameter is required");
   }
-  const welds = await fetchWelds(query);
+  let welds = await fetchWelds(query);
+
+  if (query.dateThreshold) {
+    welds = welds.filter(
+      (weld) => new Date(weld.timestamp) >= new Date(query.dateThreshold)
+    );
+  }
   const filteredWelds = welds.filter(
     (weld) =>
       weld.weldingMachine && String(weld.weldingMachine.serial) === serial
@@ -86,11 +98,18 @@ const getWeldDurationTotalData = async (serial, query = {}) => {
   };
 };
 
-// Existing endpoint handlers can now call the helper functions if needed
+// Endpoint handlers updated to read an optional "number" parameter (days)
 const getMaterialConsumptionTotal = async (req, res) => {
   try {
-    const { serial } = req.params;
-    const data = await getMaterialConsumptionTotalData(serial, req.query);
+    const { serial, number } = req.params;
+    let query = { ...req.query };
+    if (number) {
+      const days = parseInt(number, 10);
+      const dateThreshold = new Date();
+      dateThreshold.setDate(dateThreshold.getDate() - days);
+      query.dateThreshold = dateThreshold;
+    }
+    const data = await getMaterialConsumptionTotalData(serial, query);
     res.json(data);
   } catch (error) {
     res.status(500).json({ error: error.message });
@@ -99,8 +118,15 @@ const getMaterialConsumptionTotal = async (req, res) => {
 
 const getWeldDurationTotal = async (req, res) => {
   try {
-    const { serial } = req.params;
-    const data = await getWeldDurationTotalData(serial, req.query);
+    const { serial, number } = req.params;
+    let query = { ...req.query };
+    if (number) {
+      const days = parseInt(number, 10);
+      const dateThreshold = new Date();
+      dateThreshold.setDate(dateThreshold.getDate() - days);
+      query.dateThreshold = dateThreshold;
+    }
+    const data = await getWeldDurationTotalData(serial, query);
     res.json(data);
   } catch (error) {
     res.status(500).json({ error: error.message });
