@@ -5,6 +5,7 @@
 - **GET `/kemppi/`** - Retrieves all weld data from the server.
 - **GET `/kemppi/machines`** - Retrieves the sorted latest used welding machines.
 - **GET `/kemppi/machines/latest`** - gets all of the machines sorted in order latest
+- **GET `/kemppi/machines/latest/:number`** - gets the machines used in the latest to the days number inputs
 - **GET `/kemppi/machines/:serial`** - Retrieves the latest welds for a specific machine based on its serial number.
 
 ### Machine Information

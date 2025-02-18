@@ -18,6 +18,8 @@ router.get("/products/:serial", machineController.getMachineBySerial);
 router.get("/machines", weldController.getWeldsByTime);
 // sort all of the machines by the latest
 router.get("/machines/latest", weldController.getWeldsByLatest);
+// Get the latest used machines in days  by the number what user gives
+router.get("/machines/latest/:number", weldController.getWeldsByLatestNumber);
 // Get latest used welding machines with same serial
 router.get("/machines/:serial", weldController.getWeldsByMachineTime);
 // Gives avg from all of the avgs on the voltage usage of the devices
