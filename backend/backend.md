@@ -1,19 +1,33 @@
-# Endpoints
+## Endpoints
 
-## Get the data of the voltage
+### Weld Data
 
-- `http://localhost:3000/welds/statistics/voltage`
+- **GET `/welds/`** - Retrieves all weld data from the server.
+- **GET `/welds/machines`** - Retrieves the 10 latest used welding machines.
+- **GET `/welds/machines/:serial`** - Retrieves the 10 latest welds for a specific machine based on its serial number.
 
-## Get the data of the current
+### Machine Information
 
-- `http://localhost:3000/welds/statistics/current`
+- **GET `/welds/products`** - Retrieves all available machine models.
+- **GET `/welds/products/:serial`** - Retrieves information about a specific machine based on its serial number.
 
-### Response Format
+### Welding Statistics
 
-```json
-{
-  "min": 107,
-  "avg": 247.44,
-  "max": 390
-}
-```
+- **GET `/welds/statistics/voltage/model/avg/:serial`** - Retrieves the average voltage usage for a specific model.
+- **GET `/welds/statistics/current/model/avg/:serial`** - Retrieves the average current usage for a specific model.
+- **GET `/welds/statistics/voltage/all/avg`** - Retrieves the average voltage usage across all devices.
+- **GET `/welds/statistics/current/all/avg`** - Retrieves the average current usage across all devices.
+
+### Consumption & Duration
+
+- **GET `/welds/statistics/material/model/avg/:serial`** - Retrieves the total material consumption for a specific model.
+- **GET `/welds/statistics/duration/model/avg/:serial`** - Retrieves the total welding duration for a specific model.
+
+## Configuration
+
+- The server runs on port `3000` by default, but you can change this by setting the `PORT` environment variable.
+- CORS is enabled for all routes.
+
+## License
+
+This project is licensed under the MIT License.

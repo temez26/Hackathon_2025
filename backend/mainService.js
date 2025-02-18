@@ -1,6 +1,7 @@
+require("dotenv").config();
 const axios = require("axios");
 
-const API_KEY = "1dfc5a9a0aeb5a96";
+const API_KEY = process.env.API_KEY;
 const WELDS_URL = "http://hackathon.dev.api.kemppi.com/welds";
 
 // Helper to fetch welds data with optional query parameters.
