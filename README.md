@@ -1,6 +1,6 @@
 # Hackathon_2025
 
-Kemppi hackathon repo
+## Kemppi hackathon team gatorage
 
 ## About the Project
 
