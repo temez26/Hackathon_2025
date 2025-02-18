@@ -8,7 +8,7 @@ class ApiClient {
   static const String baseUrl = 'http://localhost:3000';
 
   Future<dynamic> fetchRecentWelds() async {
-    const url = '$baseUrl/kemppi/machines';
+    const url = '$baseUrl/kemppi/machines/latest';
     try {
       final response = await http.get(Uri.parse(url));
       //print(response.body);

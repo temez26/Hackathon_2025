@@ -1,26 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:kemppi_ui/model/Machine.dart';
+import 'package:intl/intl.dart';
 
-class RecentDataCarousel extends StatefulWidget {
+class RecentDataList extends StatefulWidget {
   final List<Machine> list_machines;
-  RecentDataCarousel({required this.list_machines});
+  RecentDataList({required this.list_machines});
 
   @override
-  _RecentDataCarousel createState() => _RecentDataCarousel();
+  _RecentDataList createState() => _RecentDataList();
 }
 
-class _RecentDataCarousel extends State<RecentDataCarousel> {
-  final PageController _controller = PageController(viewportFraction: 0.6);
+class _RecentDataList extends State<RecentDataList> {
   String _searchText = "";
   List<Machine> _filteredMachines = [];
 
   @override
   void initState() {
     super.initState();
-    _filterMachines("");
-    _filteredMachines =
-        widget.list_machines; // Ensure all machines are shown initially
-    print(_filteredMachines);
+    _filteredMachines = widget.list_machines;
   }
 
   void _filterMachines(String searchText) {
@@ -38,10 +35,9 @@ class _RecentDataCarousel extends State<RecentDataCarousel> {
     });
   }
 
-  @override
-  void dispose() {
-    _controller.dispose();
-    super.dispose();
+  String _formatDate(String dateString) {
+    DateTime date = DateTime.parse(dateString); // Convert String to DateTime
+    return DateFormat('dd-MM-yyyy').format(date);
   }
 
   @override
@@ -53,236 +49,187 @@ class _RecentDataCarousel extends State<RecentDataCarousel> {
           child: TextField(
             onChanged: _filterMachines,
             decoration: InputDecoration(
-              labelText: 'Search',
+              labelText: 'Filter by model',
               border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(15), // Rounded border
-                borderSide:
-                    BorderSide(color: Color(0xFFf57300)), // Orange border
+
+                borderSide: BorderSide(
+                    color: Color(0xFFf57300), width: 2), // Orange border
               ),
               enabledBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(15), // Rounded border
-                borderSide:
-                    BorderSide(color: Color(0xFFf57300)), // Orange border
+                borderSide: BorderSide(
+                    color: Color(0xFFf57300), width: 2), // Orange border
               ),
               focusedBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(15), // Rounded border
-                borderSide:
-                    BorderSide(color: Color(0xFFf57300)), // Orange border
+                borderSide: BorderSide(
+                    color: Color(0xFFf57300), width: 2), // Orange border
               ),
             ),
           ),
         ),
-        SizedBox(
-          height: 350,
-          width: 800,
-          child: PageView.builder(
-            controller: _controller,
-            itemCount: _filteredMachines.length,
-            itemBuilder: (context, index) {
-              final machine = _filteredMachines[index];
-              return Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                child: ClipRRect(
-                  child: Container(
-                    padding: const EdgeInsets.only(
-                        left: 40, right: 40), // Espaciado interno
-                    decoration: BoxDecoration(
-                      color: Colors.grey[300], // Fondo gris claro
-                      border: Border.all(color: Color(0xFFf57300), width: 2),
-                      borderRadius: BorderRadius.circular(6),
-                    ),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisAlignment: MainAxisAlignment.center,
+        SingleChildScrollView(
+          scrollDirection: Axis.horizontal,
+          child: Column(
+            children: [
+              Container(
+                height: 70,
+                width: 1500, // Full width of the screen
+                margin: const EdgeInsets.symmetric(vertical: 10.0),
+                padding:
+                    const EdgeInsets.symmetric(vertical: 20.0, horizontal: 20),
+                decoration: BoxDecoration(
+                  color: Colors.grey[300], // Background color
+                  border: Border.all(
+                      color: Color(0xFFf57300), width: 2), // Orange border
+                  borderRadius: BorderRadius.circular(6), // Rounded border
+                ),
+                child: Table(
+                  columnWidths: const {
+                    0: FlexColumnWidth(1),
+                    1: FlexColumnWidth(1),
+                    2: FlexColumnWidth(1),
+                    3: FlexColumnWidth(1),
+                    4: FlexColumnWidth(1),
+                    5: FlexColumnWidth(1),
+                    6: FlexColumnWidth(1),
+                    7: FlexColumnWidth(1),
+                    8: FlexColumnWidth(1),
+                    9: FlexColumnWidth(1),
+                  },
+                  children: [
+                    TableRow(
                       children: [
-                        // Corriente y Voltaje
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Text(
-                              "Current:",
-                              style: TextStyle(
-                                fontSize: 18,
-                                color: Colors.black,
-                                fontFamily: 'Proxima Nova',
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                            SizedBox(width: 180),
-                            Text(
-                              "Voltage:",
-                              style: TextStyle(
-                                fontSize: 18,
-                                color: Colors.black,
-                                fontFamily: 'Proxima Nova',
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                          ],
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Text(
-                              "${machine.weldingParameters.current.avg} (avg)",
-                              style: TextStyle(
-                                fontSize: 18,
-                                color: Colors.black,
-                                fontFamily: 'Proxima Nova',
-                              ),
-                            ),
-                            SizedBox(width: 180),
-                            Text(
-                              "${machine.weldingParameters.voltage.avg} (avg)",
-                              style: TextStyle(
-                                fontSize: 18,
-                                color: Colors.black,
-                                fontFamily: 'Proxima Nova',
-                              ),
-                            ),
-                          ],
-                        ),
-                        const SizedBox(height: 15),
-                        Row(
-                          children: [
-                            Text(
-                              "Weld Duration Total: ",
-                              style: TextStyle(
-                                fontSize: 18,
-                                color: Colors.black,
-                                fontFamily: 'Proxima Nova',
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                            const SizedBox(height: 8),
-                            Text(
-                              "${machine.weldDurationMs.totalMs} ms",
-                              style: TextStyle(
-                                fontSize: 18,
-                                color: Colors.black,
-                                fontFamily: 'Proxima Nova',
-                              ),
-                            ),
-                          ],
-                        ),
-                        SizedBox(height: 15),
-                        // Material Consumption
-                        Text(
-                          "Material Consumption:",
-                          style: TextStyle(
-                              fontSize: 18,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.black,
-                              fontFamily: 'Proxima Nova'),
-                        ),
-                        SizedBox(height: 10),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Row(
-                                  children: [
-                                    Text(
-                                      "energy: ",
-                                      style: TextStyle(
-                                          fontSize: 18,
-                                          color: Colors.black,
-                                          fontFamily: 'Proxima Nova'),
-                                    ),
-                                    Text(
-                                      "${machine.materialConsumption.energyConsumptionAsWh} Wh",
-                                      style: TextStyle(
-                                          fontSize: 18,
-                                          color: Colors.black,
-                                          fontFamily: 'Proxima Nova'),
-                                    ),
-                                  ],
-                                ),
-                                SizedBox(height: 10),
-                                Row(
-                                  children: [
-                                    Text(
-                                      "wire: ",
-                                      style: TextStyle(
-                                          fontSize: 18,
-                                          color: Colors.black,
-                                          fontFamily: 'Proxima Nova'),
-                                    ),
-                                    Text(
-                                      "${machine.materialConsumption.wireConsumptionInMeters} m",
-                                      style: TextStyle(
-                                          fontSize: 18,
-                                          color: Colors.black,
-                                          fontFamily: 'Proxima Nova'),
-                                    ),
-                                  ],
-                                ),
-                              ],
-                            ),
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Row(
-                                  children: [
-                                    Text(
-                                      "filler: ",
-                                      style: TextStyle(
-                                          fontSize: 18,
-                                          color: Colors.black,
-                                          fontFamily: 'Proxima Nova'),
-                                    ),
-                                    Text(
-                                      "${machine.materialConsumption.fillerConsumptionInGrams} g",
-                                      style: TextStyle(
-                                          fontSize: 18,
-                                          color: Colors.black,
-                                          fontFamily: 'Proxima Nova'),
-                                    ),
-                                  ],
-                                ),
-                                SizedBox(height: 10),
-                                Row(
-                                  children: [
-                                    Text(
-                                      "gas: ",
-                                      style: TextStyle(
-                                          fontSize: 18,
-                                          color: Colors.black,
-                                          fontFamily: 'Proxima Nova'),
-                                    ),
-                                    Text(
-                                      "${machine.materialConsumption.gasConsumptionInLiters} l",
-                                      style: TextStyle(
-                                          fontSize: 18,
-                                          color: Colors.black,
-                                          fontFamily: 'Proxima Nova'),
-                                    ),
-                                  ],
-                                ),
-                              ],
-                            ),
-                          ],
-                        ),
-                        SizedBox(height: 40),
-                        // Modelo
-                        Center(
-                          child: Text(
-                            "Model: ${machine.weldingMachine.model}",
+                        Text('Timestamp',
                             style: TextStyle(
-                                fontSize: 30,
                                 fontWeight: FontWeight.bold,
-                                color: Colors.black,
-                                fontFamily: 'Proxima Nova'),
-                          ),
-                        ),
+                                fontSize: 16,
+                                fontFamily: 'Proxima Nova')),
+                        Text('Model',
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 16,
+                                fontFamily: 'Proxima Nova')),
+                        Text('Serial Number',
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 16,
+                                fontFamily: 'Proxima Nova')),
+                        Text('Group',
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 16,
+                                fontFamily: 'Proxima Nova')),
+                        Text('Current',
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 16,
+                                fontFamily: 'Proxima Nova')),
+                        Text('Voltage',
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 16,
+                                fontFamily: 'Proxima Nova')),
+                        Text('Energy Consump',
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 16,
+                                fontFamily: 'Proxima Nova')),
+                        Text('Wire Consump',
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 16,
+                                fontFamily: 'Proxima Nova')),
+                        Text('Filler Consump',
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 16,
+                                fontFamily: 'Proxima Nova')),
+                        Text('Gas Consump',
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 16,
+                                fontFamily: 'Proxima Nova')),
                       ],
                     ),
-                  ),
+                  ],
                 ),
-              );
-            },
+              ),
+              ..._filteredMachines.map((machine) {
+                return Container(
+                  width: 1500, // Full width of the screen
+                  margin: const EdgeInsets.symmetric(vertical: 5.0),
+                  padding: const EdgeInsets.all(5.0),
+                  decoration: BoxDecoration(
+                    color: Colors.grey[300], // Background color
+                    border: Border.all(
+                        color: Colors.grey, width: 2), // Orange border
+                    borderRadius: BorderRadius.circular(6), // Rounded border
+                  ),
+                  child: Table(
+                    columnWidths: const {
+                      0: FlexColumnWidth(1),
+                      1: FlexColumnWidth(1),
+                      2: FlexColumnWidth(1),
+                      3: FlexColumnWidth(1),
+                      4: FlexColumnWidth(1),
+                      5: FlexColumnWidth(1),
+                      6: FlexColumnWidth(1),
+                      7: FlexColumnWidth(1),
+                      8: FlexColumnWidth(1),
+                      9: FlexColumnWidth(1),
+                    },
+                    children: [
+                      TableRow(
+                        children: [
+                          Text(_formatDate(machine.timestamp.toString()),
+                              style: TextStyle(
+                                  fontSize: 16, fontFamily: 'Proxima Nova')),
+                          Text(machine.weldingMachine.model.toString(),
+                              style: TextStyle(
+                                  fontSize: 16, fontFamily: 'Proxima Nova')),
+                          Text(machine.weldingMachine.serial.toString(),
+                              style: TextStyle(
+                                  fontSize: 16, fontFamily: 'Proxima Nova')),
+                          Text(machine.weldingMachine.group.toString(),
+                              style: TextStyle(
+                                  fontSize: 16, fontFamily: 'Proxima Nova')),
+                          Text(machine.weldingParameters.current.avg.toString(),
+                              style: TextStyle(
+                                  fontSize: 16, fontFamily: 'Proxima Nova')),
+                          Text(machine.weldingParameters.voltage.avg.toString(),
+                              style: TextStyle(
+                                  fontSize: 16, fontFamily: 'Proxima Nova')),
+                          Text(
+                              machine.materialConsumption.energyConsumptionAsWh
+                                  .toString(),
+                              style: TextStyle(
+                                  fontSize: 16, fontFamily: 'Proxima Nova')),
+                          Text(
+                              machine
+                                  .materialConsumption.wireConsumptionInMeters
+                                  .toString(),
+                              style: TextStyle(
+                                  fontSize: 16, fontFamily: 'Proxima Nova')),
+                          Text(
+                              machine
+                                  .materialConsumption.fillerConsumptionInGrams
+                                  .toString(),
+                              style: TextStyle(
+                                  fontSize: 16, fontFamily: 'Proxima Nova')),
+                          Text(
+                              machine.materialConsumption.gasConsumptionInLiters
+                                  .toString(),
+                              style: TextStyle(
+                                  fontSize: 16, fontFamily: 'Proxima Nova')),
+                        ],
+                      ),
+                    ],
+                  ),
+                );
+              }).toList(),
+            ],
           ),
         ),
       ],

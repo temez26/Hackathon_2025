@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:kemppi_ui/Pluggins/machine_list_carousel.dart';
 import 'package:kemppi_ui/Pluggins/recent_data_carousel.dart';
 import 'package:kemppi_ui/Pluggins/recent_used_machines.dart';
 import 'package:kemppi_ui/Pluggins/tabbar.dart';
@@ -16,20 +17,37 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   final ApiClient apiClient =
       ApiClient(); // Create an instance of the ApiClient class
-  List<Machine> _machines = [];
+  List<Machine> _recentmachines = [];
+  List<Machine> _allmachines = [];
   String _data = 'Fetching data...';
 
   @override
   void initState() {
     super.initState();
     fetchRecentWelds();
+    fetchAlltMachines();
   }
 
   Future<void> fetchRecentWelds() async {
     try {
       final machines = await apiClient.fetchRecentWelds();
       setState(() {
-        _machines = machines;
+        _recentmachines = machines;
+        _data = machines.toString();
+        print(_data);
+      });
+    } catch (e) {
+      setState(() {
+        _data = 'Error: $e';
+      });
+    }
+  }
+
+  Future<void> fetchAlltMachines() async {
+    try {
+      final machines = await apiClient.fetchByMachineSerial();
+      setState(() {
+        _allmachines = machines;
         _data = machines.toString();
         print(_data);
       });
@@ -46,7 +64,12 @@ class _HomeScreenState extends State<HomeScreen> {
       appBar: _Header(),
       endDrawer: SlideMenu(),
       body: SingleChildScrollView(
-        child: Column(children: [_Body(machines: _machines) /* _Footer()*/]),
+        child: Column(children: [
+          _Body(
+            recentmachines: _recentmachines,
+            allmachines: _allmachines,
+          ) /* _Footer()*/
+        ]),
       ),
     );
   }
@@ -80,9 +103,10 @@ class _Header extends StatelessWidget implements PreferredSizeWidget {
 }
 
 class _Body extends StatelessWidget {
-  final List<Machine> machines;
+  final List<Machine> recentmachines;
+  final List<Machine> allmachines;
 
-  _Body({required this.machines});
+  _Body({required this.recentmachines, required this.allmachines});
 
   @override
   Widget build(BuildContext context) {
@@ -112,9 +136,8 @@ class _Body extends StatelessWidget {
                         dividerColor: Colors.transparent,
                         indicator: BoxDecoration(
                           color: Colors.white,
-                          border: Border.all(
-                            color: Color(0xFFf57300),
-                          ),
+                          border:
+                              Border.all(color: Color(0xFFf57300), width: 2),
                           borderRadius:
                               const BorderRadius.all(Radius.circular(30)),
                         ),
@@ -123,7 +146,7 @@ class _Body extends StatelessWidget {
                         tabs: const [
                           TabItem(title: 'Recent Welding Data'),
                           TabItem(title: 'Trends and Summary'),
-                          TabItem(title: 'Recently used Machines'),
+                          TabItem(title: 'Models and Machines'),
                         ],
                       ),
                     ),
@@ -136,10 +159,14 @@ class _Body extends StatelessWidget {
                         .width, // Set the width to the screen width
                     child: TabBarView(
                       children: [
-                        Center(
-                            child: RecentDataCarousel(list_machines: machines)),
+                        SingleChildScrollView(
+                          child: RecentDataList(list_machines: recentmachines),
+                        ),
                         Center(child: Text('Archived Page')),
-                        Center(child: RecentUsedMachines()),
+                        Center(
+                            child: MachineListCarousel(
+                          list_machines: allmachines,
+                        )),
                       ],
                     ),
                   ),
