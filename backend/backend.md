@@ -23,6 +23,10 @@
 - **GET `/kemppi/statistics/material/model/avg/:serial`** - Retrieves the total material consumption for a specific model.
 - **GET `/kemppi/statistics/duration/model/avg/:serial`** - Retrieves the total welding duration for a specific model.
 
+### Get all of the statistic data
+
+- **GET `/kemppi/statistics/:serial`** - Retrieves the all of the statisticdata
+
 ## Configuration
 
 - The server runs on port `3000` by default, but you can change this by setting the `PORT` environment variable.
