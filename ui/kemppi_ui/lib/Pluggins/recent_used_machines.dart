@@ -6,12 +6,11 @@ class RecentUsedMachines extends StatefulWidget {
 }
 
 class _RecentUsedMachines extends State<RecentUsedMachines> {
-  final PageController _controller = PageController(viewportFraction: 0.6);
+  final PageController _controller = PageController(viewportFraction: 0.5);
   int _currentPage = 0;
 
   void _nextPage() {
     if (_currentPage < 5) {
-      // Prevent going past the last item
       _currentPage++;
       _controller.animateToPage(
         _currentPage,
@@ -23,7 +22,6 @@ class _RecentUsedMachines extends State<RecentUsedMachines> {
 
   void _previousPage() {
     if (_currentPage > 0) {
-      // Prevent going before first item
       _currentPage--;
       _controller.animateToPage(
         _currentPage,
@@ -42,78 +40,108 @@ class _RecentUsedMachines extends State<RecentUsedMachines> {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: 400,
-      width: 1000,
-      child: Stack(
+      height: 350,
+      width: 1100,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          // Carousel
-          PageView.builder(
-            controller: _controller,
-            itemCount: 6,
-            onPageChanged: (index) {
-              setState(() {
-                _currentPage = index;
-              });
-            },
-            itemBuilder: (context, index) {
-              return Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(12),
-                  child: Container(
-                    decoration: BoxDecoration(
-                      color: Colors.grey[300], // Fondo gris
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        // Rectángulo naranja
-                        Container(
-                          width: 300,
-                          height: 200,
-                          decoration: BoxDecoration(
-                            color: Colors.orange,
-                            borderRadius: BorderRadius.circular(12),
-                          ),
-                        ),
-                        const SizedBox(height: 8),
-                        const Text(
-                          "Model",
-                          style: TextStyle(
-                            color: Colors.black,
-                            fontSize: 18,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-              );
-            },
-          ),
-
           // Left Button
-          Positioned(
-            left: 10,
-            top: 150, // Adjust position vertically
-            child: IconButton(
-              icon: Icon(Icons.arrow_back, size: 40, color: Colors.black),
-              onPressed: _previousPage,
+          GestureDetector(
+            onTap: _previousPage,
+            child: Container(
+              width: 50,
+              height: 50,
+              decoration: BoxDecoration(
+                color: Colors.grey[300],
+                shape: BoxShape.circle,
+              ),
+              alignment: Alignment.center,
+              child: Text(
+                "<",
+                style: TextStyle(
+                  fontSize: 30,
+                  color: Color(0xFFf57300),
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
             ),
           ),
+          SizedBox(width: 30), // Add space between left button and carousel
+
+          // Carousel
+          SizedBox(
+            width: 900, // Ajusta el ancho del carrusel
+            child: PageView.builder(
+              controller: _controller,
+              itemCount: 6,
+              onPageChanged: (index) {
+                setState(() {
+                  _currentPage = index;
+                });
+              },
+              itemBuilder: (context, index) {
+                return Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(30),
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color: Colors.grey[300],
+                        borderRadius: BorderRadius.circular(30),
+                      ),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Container(
+                            width: 400,
+                            height: 250,
+                            decoration: BoxDecoration(
+                              color: Color(0xFFf57300),
+                              borderRadius: BorderRadius.circular(30),
+                            ),
+                          ),
+                          const SizedBox(height: 8),
+                          const Text(
+                            "Model",
+                            style: TextStyle(
+                              color: Colors.black,
+                              fontSize: 18,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                );
+              },
+            ),
+          ),
+          SizedBox(width: 30), // Add space between carousel and right button
 
           // Right Button
-          Positioned(
-            right: 10,
-            top: 150, // Adjust position vertically
-            child: IconButton(
-              icon: Icon(Icons.arrow_forward, size: 40, color: Colors.black),
-              onPressed: _nextPage,
+          GestureDetector(
+            onTap: _nextPage,
+            child: Container(
+              width: 50,
+              height: 50,
+              decoration: BoxDecoration(
+                color: Colors.grey[300],
+                shape: BoxShape.circle,
+              ),
+              alignment: Alignment.center,
+              child: Text(
+                ">",
+                style: TextStyle(
+                  fontSize: 30,
+                  color: Color(0xFFf57300),
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
             ),
           ),
         ],
       ),
     );
   }
+
 }
