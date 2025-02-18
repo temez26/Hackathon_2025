@@ -3,8 +3,8 @@
 ### Weld Data
 
 - **GET `/kemppi/`** - Retrieves all weld data from the server.
-- **GET `/kemppi/machines`** - Retrieves the sorted latest used welding machines.
-- **GET `/kemppi/machines/latest`** - gets all of the machines sorted in order latest
+- **GET `/kemppi/machines`** - Retrieves the sorted latest used welding machines. IN USE ON THE FRONTEND
+- **GET `/kemppi/machines/latest`** - gets all of the machines sorted in order latest. IN USE ON THE FRONTEND
 - **GET `/kemppi/machines/latest/:number`** - gets the machines used in the latest to the days number inputs
 - **GET `/kemppi/machines/:serial`** - Retrieves the latest welds for a specific machine based on its serial number.
 
@@ -28,7 +28,7 @@
 ### Get all of the statistic data
 
 - **GET `/kemppi/statistics/:serial`** - Retrieves the all of the statisticdata for specific model
-- **GET `/kemppi/statistics/:serial/:number?`** - Retrieves the all of the statisticdata for specific model for latest days determined by the number
+- **GET `/kemppi/statistics/:serial/:number?`** - Retrieves the all of the statisticdata for specific model for latest days determined by the number. MAYBE IN USE ON THE FRONTEND IF WE HAVE TIME
 
 ## Configuration
 

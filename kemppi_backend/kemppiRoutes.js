@@ -14,6 +14,11 @@ router.get("/", weldController.getWelds);
 router.get("/machines", weldController.getWeldsByTime);
 // sort all of the machines by the latest IN USE ON THE FRONTEND
 router.get("/machines/latest", weldController.getWeldsByLatest);
+// Gives all the statistics for specific serial and optionally also latest used days with the number MAYBE IN USE ON THE FRONTEND IF THERE IS TIME
+router.get(
+  "/statistics/:serial/:number?",
+  statisticsController.getAllStatistics
+);
 
 // Gives all of the different models
 router.get("/products", machineController.getAllDifferentModels);
@@ -55,11 +60,6 @@ router.get(
 router.get(
   "/statistics/duration/model/avg/:serial",
   consumeController.getWeldDurationTotal
-);
-// Gives all the statistics for specific serial and optionally also latest used days with the number
-router.get(
-  "/statistics/:serial/:number?",
-  statisticsController.getAllStatistics
 );
 
 module.exports = router;
