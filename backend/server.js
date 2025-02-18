@@ -1,3 +1,4 @@
+require("dotenv").config();
 const express = require("express");
 const cors = require("cors");
 const app = express();
@@ -6,7 +7,7 @@ const parametersController = require("./controllers/parametersController");
 const machineController = require("./controllers/machineController");
 const consumeController = require("./controllers/consumeController");
 
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT;
 
 // Enable CORS for all routes
 app.use(cors());
