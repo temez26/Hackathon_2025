@@ -3,7 +3,7 @@
 ## Start Backend
 
 ```sh
-cd backend
+cd kemppi_backend
 npm install
 node server.js
 ```

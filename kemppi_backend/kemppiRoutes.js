@@ -10,14 +10,17 @@ const router = express.Router();
 // get all of the data from the server
 router.get("/", weldController.getWelds);
 
+// Get the latest used welding machines from all of the models IN USE ON THE FRONTEND
+router.get("/machines", weldController.getWeldsByTime);
+// sort all of the machines by the latest IN USE ON THE FRONTEND
+router.get("/machines/latest", weldController.getWeldsByLatest);
+
 // Gives all of the different models
 router.get("/products", machineController.getAllDifferentModels);
 // get one of the welding machine data by the serial
 router.get("/products/:serial", machineController.getMachineBySerial);
 // Get the latest used welding machines from all of the models
-router.get("/machines", weldController.getWeldsByTime);
-// sort all of the machines by the latest
-router.get("/machines/latest", weldController.getWeldsByLatest);
+
 // Get the latest used machines in days  by the number what user gives
 router.get("/machines/latest/:number", weldController.getWeldsByLatestNumber);
 // Get latest used welding machines with same serial
@@ -53,7 +56,10 @@ router.get(
   "/statistics/duration/model/avg/:serial",
   consumeController.getWeldDurationTotal
 );
-
-router.get("/statistics/:serial", statisticsController.getAllStatistics);
+// Gives all the statistics for specific serial and optionally also latest used days with the number
+router.get(
+  "/statistics/:serial/:number?",
+  statisticsController.getAllStatistics
+);
 
 module.exports = router;
