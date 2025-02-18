@@ -27,7 +27,8 @@
 
 ### Get all of the statistic data
 
-- **GET `/kemppi/statistics/:serial`** - Retrieves the all of the statisticdata
+- **GET `/kemppi/statistics/:serial`** - Retrieves the all of the statisticdata for specific model
+- **GET `/kemppi/statistics/:serial/:number?`** - Retrieves the all of the statisticdata for specific model for latest days determined by the number
 
 ## Configuration
 

@@ -53,7 +53,10 @@ router.get(
   "/statistics/duration/model/avg/:serial",
   consumeController.getWeldDurationTotal
 );
-
-router.get("/statistics/:serial", statisticsController.getAllStatistics);
+// Gives all the statistics for specific serial and optionally also latest used days with the number
+router.get(
+  "/statistics/:serial/:number?",
+  statisticsController.getAllStatistics
+);
 
 module.exports = router;

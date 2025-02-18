@@ -1,9 +1,15 @@
 const { fetchWelds } = require("../mainService");
 
-// New helper functions that return data instead of sending a response
+// helper functions that return data instead of sending a response
 const getAvgVoltageOfModelData = async (serial, query = {}) => {
   if (!serial) throw new Error("Serial query parameter is required");
-  const welds = await fetchWelds(query);
+  let welds = await fetchWelds(query);
+
+  if (query.dateThreshold) {
+    welds = welds.filter(
+      (weld) => new Date(weld.timestamp) >= new Date(query.dateThreshold)
+    );
+  }
   const filteredWelds = welds.filter(
     (weld) =>
       weld.weldingMachine && String(weld.weldingMachine.serial) === serial
@@ -33,7 +39,12 @@ const getAvgVoltageOfModelData = async (serial, query = {}) => {
 
 const getAvgCurrentOfModelData = async (serial, query = {}) => {
   if (!serial) throw new Error("Serial query parameter is required");
-  const welds = await fetchWelds(query);
+  let welds = await fetchWelds(query);
+  if (query.dateThreshold) {
+    welds = welds.filter(
+      (weld) => new Date(weld.timestamp) >= new Date(query.dateThreshold)
+    );
+  }
   const filteredWelds = welds.filter(
     (weld) =>
       weld.weldingMachine && String(weld.weldingMachine.serial) === serial
@@ -65,7 +76,15 @@ const getAvgCurrentOfModelData = async (serial, query = {}) => {
 const getAvgVoltageOfModel = async (req, res) => {
   try {
     const serial = req.params.serial || req.query.serial;
-    const data = await getAvgVoltageOfModelData(serial, req.query);
+
+    let query = { ...req.query };
+    if (req.params.number) {
+      const days = parseInt(req.params.number, 10);
+      const dateThreshold = new Date();
+      dateThreshold.setDate(dateThreshold.getDate() - days);
+      query.dateThreshold = dateThreshold;
+    }
+    const data = await getAvgVoltageOfModelData(serial, query);
     res.json(data);
   } catch (error) {
     res.status(500).json({ error: error.message });
@@ -75,7 +94,14 @@ const getAvgVoltageOfModel = async (req, res) => {
 const getAvgCurrentOfModel = async (req, res) => {
   try {
     const serial = req.params.serial || req.query.serial;
-    const data = await getAvgCurrentOfModelData(serial, req.query);
+    let query = { ...req.query };
+    if (req.params.number) {
+      const days = parseInt(req.params.number, 10);
+      const dateThreshold = new Date();
+      dateThreshold.setDate(dateThreshold.getDate() - days);
+      query.dateThreshold = dateThreshold;
+    }
+    const data = await getAvgCurrentOfModelData(serial, query);
     res.json(data);
   } catch (error) {
     res.status(500).json({ error: error.message });
@@ -84,7 +110,12 @@ const getAvgCurrentOfModel = async (req, res) => {
 
 const getVoltageAvgAll = async (req, res) => {
   try {
-    const welds = await fetchWelds(req.query);
+    let welds = await fetchWelds(req.query);
+    if (req.query.dateThreshold) {
+      welds = welds.filter(
+        (weld) => new Date(weld.timestamp) >= new Date(req.query.dateThreshold)
+      );
+    }
     const voltageData = welds
       .map((weld) => weld.weldingParameters?.voltage)
       .filter((v) => v !== undefined);
@@ -104,7 +135,12 @@ const getVoltageAvgAll = async (req, res) => {
 
 const getCurrentAvgAll = async (req, res) => {
   try {
-    const welds = await fetchWelds(req.query);
+    let welds = await fetchWelds(req.query);
+    if (req.query.dateThreshold) {
+      welds = welds.filter(
+        (weld) => new Date(weld.timestamp) >= new Date(req.query.dateThreshold)
+      );
+    }
     const currentData = welds
       .map((weld) => weld.weldingParameters?.current)
       .filter((c) => c !== undefined);
