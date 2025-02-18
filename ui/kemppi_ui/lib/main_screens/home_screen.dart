@@ -130,7 +130,7 @@ class _Body extends StatelessWidget {
                   ),
                   SizedBox(height: 20),
                   Container(
-                    height: 400, // Adjust the height as needed
+                    height: 500, // Adjust the height as needed
                     width: MediaQuery.of(context)
                         .size
                         .width, // Set the width to the screen width
