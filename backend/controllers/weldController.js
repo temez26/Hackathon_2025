@@ -11,7 +11,7 @@ const getWelds = async (req, res) => {
 };
 
 // Returns the latest weld record for each unique welding machine (using serial for separation)
-const getWeldsByTimestamp = async (req, res) => {
+const getWeldsByTime = async (req, res) => {
   try {
     const welds = await fetchWelds({});
 
@@ -66,5 +66,5 @@ const getWeldsByMachineTime = async (req, res) => {
 module.exports = {
   getWelds,
   getWeldsByMachineTime,
-  getWeldsByTimestamp,
+  getWeldsByTime,
 };

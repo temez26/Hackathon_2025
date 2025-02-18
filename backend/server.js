@@ -23,9 +23,9 @@ weldsRouter.get("/products", machineController.getAllDifferentModels);
 // get one of the welding machine data by the serial
 weldsRouter.get("/products/:serial", machineController.getMachineBySerial);
 
-// Get the 10 latest used welding machines
-weldsRouter.get("/machines", weldController.getWeldsByTimestamp);
-// Get 10 latest used welding machine by serial
+// Get the latest used welding machines from all of the models
+weldsRouter.get("/machines", weldController.getWeldsByTime);
+// Get latest used welding machines with same serial
 weldsRouter.get("/machines/:serial", weldController.getWeldsByMachineTime);
 
 // Gives avg for voltage used on certain model
