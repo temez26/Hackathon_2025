@@ -11,7 +11,7 @@ node server.js
 ## Start Frontend
 
 ```sh
-cd kemppi-ui
+cd kemppi_ui
 flutter pub get
 flutter run
 ```
